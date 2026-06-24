@@ -4,7 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
   <meta name="theme-color" content="#0a0a0f" />
+  <meta name="color-scheme" content="dark" />
   <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Preconnect for faster external resource loading -->
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
   <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
   <link rel="icon" type="image/png" sizes="16x16" href="logo.png">
@@ -15,7 +23,7 @@
   <!-- Primary Meta Tags -->
   <title>Arafat Hossain - Full-Stack Web Developer | Laravel, React, Vue.js Expert</title>
   <meta name="title" content="Arafat Hossain - Full-Stack Web Developer | Laravel, React, Vue.js Expert" />
-  <meta name="description" content="Experienced Full-Stack Web Developer specializing in Laravel, React, Vue.js, PHP, and JavaScript. 4+ years building scalable web applications, APIs, and modern user interfaces." />
+  <meta name="description" content="Arafat Hossain — Full-Stack Web Developer in Dhaka, BD. 4+ years with Laravel, React, Vue.js & PHP. Scalable web apps, APIs & modern UIs." />
   <meta name="keywords" content="Full-Stack Developer, Laravel Developer, React Developer, Vue.js, PHP, JavaScript, Web Development, API Development, Arafat Hossain, Bangladesh Developer" />
   <meta name="author" content="Arafat Hossain" />
   <meta name="robots" content="index, follow" />
@@ -27,7 +35,7 @@
   <meta property="og:url" content="https://arafat-web.github.io/" />
   <meta property="og:title" content="Arafat Hossain - Full-Stack Web Developer | Laravel, React, Vue.js Expert" />
   <meta property="og:description" content="Experienced Full-Stack Web Developer specializing in Laravel, React, Vue.js, PHP, and JavaScript. 4+ years building scalable web applications, APIs, and modern user interfaces." />
-  <meta property="og:image" content="https://arafat-web.github.io/assets/arafat-portfolio-preview.jpg" />
+  <meta property="og:image" content="https://arafat-web.github.io/logo.png" />
   <meta property="og:site_name" content="Arafat Hossain Portfolio" />
   <meta property="og:locale" content="en_US" />
   
@@ -36,7 +44,7 @@
   <meta property="twitter:url" content="https://arafat-web.github.io/" />
   <meta property="twitter:title" content="Arafat Hossain - Full-Stack Web Developer | Laravel, React, Vue.js Expert" />
   <meta property="twitter:description" content="Experienced Full-Stack Web Developer specializing in Laravel, React, Vue.js, PHP, and JavaScript. 4+ years building scalable web applications, APIs, and modern user interfaces." />
-  <meta property="twitter:image" content="https://arafat-web.github.io/assets/arafat-portfolio-preview.jpg" />
+  <meta property="twitter:image" content="https://arafat-web.github.io/logo.png" />
   <meta property="twitter:creator" content="@arafat_dev" />
   
   <!-- Canonical URL -->
@@ -57,7 +65,7 @@
     "jobTitle": "Full-Stack Web Developer",
     "description": "Experienced Full-Stack Web Developer specializing in Laravel, React, Vue.js, PHP, and JavaScript with 4+ years of experience.",
     "url": "https://arafat-web.github.io/",
-    "image": "https://arafat-web.github.io/assets/arafat-profile.jpg",
+    "image": "https://arafat-web.github.io/logo.png",
     "email": "arafat.122260@gmail.com",
     "telephone": "+8801789404345",
     "address": {
@@ -144,7 +152,41 @@
   }
   </script>
   
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Structured Data for BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://arafat-web.github.io/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "About",
+        "item": "https://arafat-web.github.io/#about"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Portfolio",
+        "item": "https://arafat-web.github.io/#portfolio"
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": "Contact",
+        "item": "https://arafat-web.github.io/#contact"
+      }
+    ]
+  }
+  </script>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 
@@ -181,6 +223,7 @@
   <!-- Hero Section -->
   <main>
     <section id="home" class="hero">
+      <canvas id="hero-canvas"></canvas>
       <div class="hero-content">
         <h1 class="hero-title">ARAFAT_HOSSAIN</h1>
         <p class="hero-subtitle">> Full-Stack Web Developer_</p>
@@ -691,15 +734,15 @@
     <div class="contact-social">
       <h3 class="social-title">CONNECT_WITH_ME</h3>
       <div class="social-links-contact">
-        <a href="https://github.com/arafat-web" class="social-link-contact" target="_blank">
+        <a href="https://github.com/arafat-web" class="social-link-contact" target="_blank" rel="me">
           <i class="fab fa-github"></i>
           <span>GitHub</span>
         </a>
-        <a href="https://www.linkedin.com/in/arafat-hossain-ar-a174b51a6/" class="social-link-contact" target="_blank">
+        <a href="https://www.linkedin.com/in/arafat-hossain-ar-a174b51a6/" class="social-link-contact" target="_blank" rel="me">
           <i class="fab fa-linkedin"></i>
           <span>LinkedIn</span>
         </a>
-        <a href="https://www.facebook.com/arafathossain000/" class="social-link-contact" target="_blank">
+        <a href="https://www.facebook.com/arafathossain000/" class="social-link-contact" target="_blank" rel="me">
           <i class="fab fa-facebook"></i>
           <span>Facebook</span>
         </a>
@@ -715,9 +758,9 @@
   <footer class="footer">
     <div class="footer-content">
       <div class="social-links">
-        <a href="https://github.com/arafat-web" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Visit Arafat's GitHub profile"><i class="fab fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/arafat-hossain-ar-a174b51a6/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Connect with Arafat on LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://www.facebook.com/arafathossain000/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Follow Arafat on Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="https://github.com/arafat-web" class="social-link" target="_blank" rel="me noopener noreferrer" aria-label="Visit Arafat's GitHub profile"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/arafat-hossain-ar-a174b51a6/" class="social-link" target="_blank" rel="me noopener noreferrer" aria-label="Connect with Arafat on LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="https://www.facebook.com/arafathossain000/" class="social-link" target="_blank" rel="me noopener noreferrer" aria-label="Follow Arafat on Facebook"><i class="fab fa-facebook"></i></a>
         <a href="mailto:arafat.122260@gmail.com" class="social-link" aria-label="Send email to Arafat"><i class="fas fa-envelope"></i></a>
       </div>
       <div class="support-section">

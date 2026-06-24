@@ -160,7 +160,7 @@ setInterval(() => {
       ${Math.random() * 10 - 5}px 0 #0000ff
     `;
     setTimeout(() => {
-      logo.style.textShadow = '0 0 20px #00ffff';
+      logo.style.textShadow = '0 0 20px rgba(59, 130, 246, 0.5)';
     }, 100);
   }
 }, 2000);
@@ -233,6 +233,173 @@ handleMobileImprovements();
 
 // Re-check on resize
 window.addEventListener('resize', handleMobileImprovements);
+
+// ============================================
+// HERO PARTICLE NETWORK ANIMATION
+// ============================================
+class ParticleNetwork {
+  constructor(canvasId) {
+    this.canvas = document.getElementById(canvasId);
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    this.particles = [];
+    this.mouse = { x: null, y: null, radius: 130 };
+    this.animationId = null;
+    this.isMobile = window.innerWidth <= 768;
+
+    this.init();
+  }
+
+  init() {
+    this.resize();
+    this.createParticles();
+    this.bindEvents();
+    this.animate();
+  }
+
+  resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = this.canvas.getBoundingClientRect();
+    this.canvas.width = rect.width * dpr;
+    this.canvas.height = rect.height * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.width = rect.width;
+    this.height = rect.height;
+  }
+
+  createParticles() {
+    this.particles = [];
+    const count = this.isMobile ? 40 : 80;
+    for (let i = 0; i < count; i++) {
+      this.particles.push({
+        x: Math.random() * this.width,
+        y: Math.random() * this.height,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        radius: Math.random() * 2 + 1.2,
+        pulse: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  bindEvents() {
+    window.addEventListener('resize', () => {
+      this.resize();
+      this.createParticles();
+    });
+
+    const hero = this.canvas.parentElement;
+    hero.addEventListener('mousemove', (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      this.mouse.x = e.clientX - rect.left;
+      this.mouse.y = e.clientY - rect.top;
+    });
+
+    hero.addEventListener('mouseleave', () => {
+      this.mouse.x = null;
+      this.mouse.y = null;
+    });
+
+    // Touch support
+    hero.addEventListener('touchmove', (e) => {
+      const rect = this.canvas.getBoundingClientRect();
+      this.mouse.x = e.touches[0].clientX - rect.left;
+      this.mouse.y = e.touches[0].clientY - rect.top;
+    }, { passive: true });
+
+    hero.addEventListener('touchend', () => {
+      this.mouse.x = null;
+      this.mouse.y = null;
+    });
+  }
+
+  animate() {
+    this.ctx.clearRect(0, 0, this.width, this.height);
+
+    for (let i = 0; i < this.particles.length; i++) {
+      const p = this.particles[i];
+
+      // Gentle wave motion
+      p.pulse += 0.008;
+      p.x += p.vx + Math.sin(p.pulse) * 0.15;
+      p.y += p.vy + Math.cos(p.pulse) * 0.15;
+
+      // Wrap around edges
+      if (p.x < -10) p.x = this.width + 10;
+      if (p.x > this.width + 10) p.x = -10;
+      if (p.y < -10) p.y = this.height + 10;
+      if (p.y > this.height + 10) p.y = -10;
+
+      // Mouse repulsion
+      if (this.mouse.x !== null && this.mouse.y !== null) {
+        const dx = p.x - this.mouse.x;
+        const dy = p.y - this.mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < this.mouse.radius && dist > 0) {
+          const force = (this.mouse.radius - dist) / this.mouse.radius;
+          const angle = Math.atan2(dy, dx);
+          p.vx += Math.cos(angle) * force * 0.03;
+          p.vy += Math.sin(angle) * force * 0.03;
+        }
+      }
+
+      // Speed dampening
+      const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+      if (speed > 1.2) {
+        p.vx = (p.vx / speed) * 1.2;
+        p.vy = (p.vy / speed) * 1.2;
+      }
+
+      // Draw particle with glow
+      const gradient = this.ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2);
+      gradient.addColorStop(0, 'rgba(59, 130, 246, 0.8)');
+      gradient.addColorStop(0.5, 'rgba(59, 130, 246, 0.3)');
+      gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.radius * 2, 0, Math.PI * 2);
+      this.ctx.fillStyle = gradient;
+      this.ctx.fill();
+
+      // Draw connections to nearby particles
+      for (let j = i + 1; j < this.particles.length; j++) {
+        const p2 = this.particles[j];
+        const dx = p.x - p2.x;
+        const dy = p.y - p2.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = this.isMobile ? 100 : 150;
+
+        if (dist < maxDist) {
+          const opacity = (1 - dist / maxDist) * 0.25;
+          this.ctx.beginPath();
+          this.ctx.moveTo(p.x, p.y);
+          this.ctx.lineTo(p2.x, p2.y);
+          this.ctx.strokeStyle = `rgba(59, 130, 246, ${opacity})`;
+          this.ctx.lineWidth = 0.6;
+          this.ctx.stroke();
+        }
+      }
+    }
+
+    this.animationId = requestAnimationFrame(() => this.animate());
+  }
+
+  destroy() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+  }
+}
+
+// Initialize particle network after DOM is ready
+function initParticleNetwork() {
+  new ParticleNetwork('hero-canvas');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initParticleNetwork);
+} else {
+  initParticleNetwork();
+}
 
 // GitHub API Integration for real-time data
 class GitHubAPIManager {
